@@ -87,9 +87,12 @@ public class NamePicker extends Application {
                 
         tfFileName.setOnKeyPressed(e ->{
             if(e.getCode() == KeyCode.ENTER){
-                stage.close();
-                fileSelector();
-                primaryStage.show();
+                if(fileSelector()){
+                    stage.close();
+                    primaryStage.show();
+                }
+                else
+                    tfFileName.setText("File not found");
             }
         });
     }
@@ -114,23 +117,18 @@ public class NamePicker extends Application {
     }
     
     // Gets the list of names from the file
-    public void fileSelector(){
+    public boolean fileSelector(){
         try{
            File file = new File(tfFileName.getText());
-           String temp;
-           String[] array;
            Scanner input = new Scanner(file); 
            while(input.hasNextLine()){
-               temp = input.nextLine();
-               array = temp.split("\t");
-               temp = array[0] + " " + array[1];
-               list.add(temp);
+               list.add(input.nextLine());
            }
+           return true;
         }
         catch(FileNotFoundException fe){
-            name.setText("File Not Found");
-            randBtn.setOnAction(e -> {});
+            return false;
         }
-        
+        //D:\NamePicker\src\Names\names.csv
     }
 }
